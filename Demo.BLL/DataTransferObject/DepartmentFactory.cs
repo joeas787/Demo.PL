@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
  namespace Demo.BLL.DataTransferObject;
 
-internal static class DepartmentFactory
+public static class DepartmentFactory
 {
     public static Department ToEntity(this DepartmentRequest request)
     {
