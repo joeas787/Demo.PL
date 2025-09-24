@@ -1,5 +1,6 @@
 ﻿
 using Demo.BLL.DataTransferObject;
+using Demo.DAL.Entities;
 using Demo.DAL.Repositories;
 
 namespace Demo.BLL.Services;

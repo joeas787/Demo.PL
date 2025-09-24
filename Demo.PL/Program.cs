@@ -16,6 +16,8 @@ namespace Demo.PL
             builder.Services.AddControllersWithViews();
             builder.Services.AddScoped<IDepartmentServices,DepartmentServices>();
             builder.Services.AddScoped<IDepartmentRepositories,DepartmentRepositories>();
+            builder.Services.AddScoped<IEmployeeRepositories,EmployeeRepositories>();
+            builder.Services.AddAutoMapper(typeof(BLL.Assembly).Assembly);
             builder.Services.AddDbContext<CompanyDbContext>(options =>
             {
                 var cs = builder.Configuration.GetConnectionString("CS");
