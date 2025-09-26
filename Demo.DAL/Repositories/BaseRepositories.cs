@@ -23,7 +23,7 @@ public class BaseRepositories<T>(CompanyDbContext dbContext):IRepositories<T> wh
         return _DbContext.SaveChanges();
     }
 
-    public IEnumerable<T> GetAll(bool track)
+    public virtual IEnumerable<T> GetAll(bool track)
     {
         return track ? _T.ToList() : _T.AsNoTracking().ToList();
     }
