@@ -26,6 +26,7 @@ namespace Demo.PL
 
 
             });
+            builder.Services.AddScoped<IEmployeeServices, EmployeeServices>();
 
             var app = builder.Build();
 

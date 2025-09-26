@@ -26,8 +26,23 @@ namespace Demo.BLL.Services
 
         public IEnumerable<EmployeeResponse> GetAll()
         {
-            var emp= employeeRepositories.GetAll();
-           return mapper.Map<IEnumerable<EmployeeResponse>>(emp);
+            var emp= employeeRepositories.GetAll(e=> new EmployeeResponse
+            {
+                Name = e.Name,
+                Age =(int)e.Age,
+                Salary=e.Salary,
+                Email=e.Email,
+                IsActive=e.IsActive,
+                Gender=e.Gender.ToString(),
+                EmployeeType=e.EmployeeType.ToString(),
+                Id=e.Id
+                
+
+
+
+
+            });
+           return emp;
             
 
         }

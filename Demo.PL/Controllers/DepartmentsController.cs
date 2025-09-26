@@ -1,11 +1,12 @@
-﻿using Demo.BLL.DataTransferObject;
+﻿using AutoMapper;
+using Demo.BLL.DataTransferObject;
 using Demo.BLL.Services;
 using Demo.DAL.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Demo.PL.Controllers;
 
-public class DepartmentsController(IDepartmentServices departmentServices,ILogger<DepartmentsController> logger,IWebHostEnvironment webHost) : Controller
+public class DepartmentsController(IDepartmentServices departmentServices,ILogger<DepartmentsController> logger,IWebHostEnvironment webHost,IMapper mapper) : Controller
 {
     [HttpGet]
     public IActionResult Index()
