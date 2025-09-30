@@ -3,6 +3,7 @@ using Demo.DAL.Context;
 using Demo.DAL.Entities;
 using Demo.DAL.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace Demo.PL
 {
@@ -17,6 +18,7 @@ namespace Demo.PL
             builder.Services.AddScoped<IDepartmentServices,DepartmentServices>();
             builder.Services.AddScoped<IDepartmentRepositories,DepartmentRepositories>();
             builder.Services.AddScoped<IEmployeeRepositories,EmployeeRepositories>();
+            builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
             builder.Services.AddAutoMapper(typeof(BLL.Assembly).Assembly);
             builder.Services.AddDbContext<CompanyDbContext>(options =>
             {

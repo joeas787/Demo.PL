@@ -8,6 +8,6 @@ namespace Demo.DAL.Entities
         public string Code { get; set; } = null!;
         public string? Description { get; set; }
         public DateTime CreatedAt { get; set; }
-       
+        public ICollection<Employee> Employees { get; set; } = [];
     }
 }
