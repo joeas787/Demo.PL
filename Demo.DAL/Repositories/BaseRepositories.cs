@@ -11,16 +11,16 @@ public class BaseRepositories<T>(CompanyDbContext dbContext):IRepositories<T> wh
     protected DbSet<T> _T = dbContext.Set<T>();
 
 
-    public int Add(T T)
+    public void Add(T T)
     {
         _T.Add(T);
-        return _DbContext.SaveChanges();
+       
     }
 
-    public int Delete(T T)
+    public void Delete(T T)
     {
         _T.Remove(T);
-        return _DbContext.SaveChanges();
+       
     }
 
     public virtual IEnumerable<T> GetAll(bool track)
@@ -28,14 +28,14 @@ public class BaseRepositories<T>(CompanyDbContext dbContext):IRepositories<T> wh
         return track ? _T.ToList() : _T.AsNoTracking().ToList();
     }
 
-    public T? GetById(int id)
+    public virtual T? GetById(int id)
     {
         return _T.Find(id);
     }
 
-    public int Update(T T)
+    public void Update(T T)
     {
         _T.Update(T);
-        return _DbContext.SaveChanges();
+       
     }
 }

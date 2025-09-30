@@ -2,24 +2,33 @@
 using Demo.BLL.DataTransferObject;
 using Demo.BLL.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.IdentityModel.Tokens;
+using System.Runtime.Intrinsics.Arm;
 
 namespace Demo.PL.Controllers
 {
-    public class EmployeesController(IEmployeeServices employeeServices, ILogger<EmployeesController> logger, IWebHostEnvironment webHost,IMapper mapper) : Controller
+    public class EmployeesController(IEmployeeServices employeeServices, ILogger<EmployeesController> logger, 
+        IWebHostEnvironment webHost,IMapper mapper,IDepartmentServices services) : Controller
     {
         [HttpGet]
         
-        public IActionResult Index()
+        public IActionResult Index(string Value)
         {
-            var emp = employeeServices.GetAll();
-           
-            return View(emp);
-           
+            if (string.IsNullOrWhiteSpace(Value))
+            {
+                var emp = employeeServices.GetAll();
+                return View(emp);
+            }
+                return View(employeeServices.GetAll(Value));
            
         }
         [HttpGet]
         public IActionResult Create()
         {
+            var dep= services.GetAll();
+            var select =new SelectList(dep,"Id","Name");
+            ViewBag.Department= select;
 
             return View();
 
@@ -71,6 +80,9 @@ namespace Demo.PL.Controllers
             var emp = employeeServices.GetById(id.Value);
             if (emp == null)
                 return NotFound();
+            var dep = services.GetAll();
+            var select = new SelectList(dep, "Id", "Name",emp.DepartmentId);
+            ViewBag.Department = select;
 
             return View(mapper.Map<EmployeeUpdateRequest>(emp));
 

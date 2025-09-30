@@ -33,6 +33,7 @@ namespace Demo.DAL.Context.Configration
                 .IsRequired();
             builder.Property(e => e.Gender).HasConversion(x => x.ToString(), s => Enum.Parse<Gender>(s));
             builder.Property(e => e.EmployeeType).HasConversion(x => x.ToString(), s => Enum.Parse<EmployeeType>(s));
+            builder.HasOne(e=>e.Department).WithMany(e=>e.Employees).HasForeignKey(e=>e.DepartmentId);
         }
     }
 }

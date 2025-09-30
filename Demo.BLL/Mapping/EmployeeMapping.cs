@@ -11,7 +11,8 @@ public class EmployeeMapping :Profile
     {
         CreateMap<EmployeeRequest, Employee>();
         CreateMap<EmployeeUpdateRequest, Employee>();
-        CreateMap<Employee,EmployeeDetailsResponse>();
+        CreateMap<Employee,EmployeeDetailsResponse>().ForMember(d=>d.Department,
+            o=>o.MapFrom(x=>x.Department.Name));
         CreateMap<Employee, EmployeeResponse>();
         CreateMap<EmployeeDetailsResponse, EmployeeUpdateRequest>();
         CreateMap<EmployeeUpdateRequest, EmployeeRequest>();
