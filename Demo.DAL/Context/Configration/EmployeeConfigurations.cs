@@ -14,6 +14,11 @@ namespace Demo.DAL.Context.Configration
         {
             builder.Property(e => e.Name)
                 .HasColumnType("VarChar")
+                .HasMaxLength(256)
+                .IsRequired(false);
+
+            builder.Property(e => e.Image)
+                .HasColumnType("VarChar")
                 .HasMaxLength(30)
                 .IsRequired();
 

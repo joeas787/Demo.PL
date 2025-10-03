@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.IdentityModel.Tokens;
 using System.Runtime.Intrinsics.Arm;
+using System.Threading.Tasks;
 
 namespace Demo.PL.Controllers
 {
@@ -13,20 +14,20 @@ namespace Demo.PL.Controllers
     {
         [HttpGet]
         
-        public IActionResult Index(string Value)
+        public async Task<IActionResult> Index(string Value)
         {
             if (string.IsNullOrWhiteSpace(Value))
             {
-                var emp = employeeServices.GetAll();
+                var emp = await employeeServices.GetAllAsync();
                 return View(emp);
             }
-                return View(employeeServices.GetAll(Value));
+                return  View(await employeeServices.GetAllAsync(Value));
            
         }
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            var dep= services.GetAll();
+            var dep= await services.GetAllAsync();
             var select =new SelectList(dep,"Id","Name");
             ViewBag.Department= select;
 
@@ -34,7 +35,7 @@ namespace Demo.PL.Controllers
 
         }
         [HttpPost]
-        public IActionResult Create(EmployeeRequest employee)
+        public async Task<IActionResult> Create(EmployeeRequest employee)
         {
 
             if (!ModelState.IsValid)
@@ -43,7 +44,7 @@ namespace Demo.PL.Controllers
             try
             {
 
-                var emp = employeeServices.Add(employee);
+                var emp =await employeeServices.AddAsync(employee);
                 if (emp > 0)
                     return RedirectToAction(nameof(Index));
                 ModelState.AddModelError(string.Empty, "cam,t");
@@ -59,11 +60,11 @@ namespace Demo.PL.Controllers
             return View(employee);
         }
         [HttpGet]
-        public IActionResult Details(int? id)
+        public async Task<IActionResult> Details(int? id)
         {
             if (!id.HasValue)
                 return BadRequest();
-            var emp = employeeServices.GetById(id.Value);
+            var emp = await employeeServices.GetByIdAsync(id.Value);
             if (emp == null)
                 return NotFound();
 
@@ -71,16 +72,16 @@ namespace Demo.PL.Controllers
 
         }
         [HttpGet]
-        public IActionResult Edit(int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
 
 
             if (!id.HasValue)
                 return BadRequest();
-            var emp = employeeServices.GetById(id.Value);
+            var emp =await employeeServices.GetByIdAsync(id.Value);
             if (emp == null)
                 return NotFound();
-            var dep = services.GetAll();
+            var dep =await services.GetAllAsync();
             var select = new SelectList(dep, "Id", "Name",emp.DepartmentId);
             ViewBag.Department = select;
 
@@ -88,7 +89,7 @@ namespace Demo.PL.Controllers
 
         }
         [HttpPost]
-        public IActionResult Edit([FromRoute] int? id, EmployeeUpdateRequest employee)
+        public async Task<IActionResult> Edit([FromRoute] int? id, EmployeeUpdateRequest employee)
         {
             if (!id.HasValue)
                 return BadRequest();
@@ -100,7 +101,7 @@ namespace Demo.PL.Controllers
             try
             {
 
-                var emp = employeeServices.Update(employee);
+                var emp =await employeeServices.UpdateAsync(employee);
                 if (emp > 0)
                     return RedirectToAction(nameof(Index));
                 ModelState.AddModelError(string.Empty, "can,t");
@@ -116,13 +117,13 @@ namespace Demo.PL.Controllers
             return View(employee);
         }
         [HttpGet]
-        public IActionResult Delete(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
 
 
             if (!id.HasValue)
                 return BadRequest();
-            var emp = employeeServices.GetById(id.Value);
+            var emp =await employeeServices.GetByIdAsync(id.Value);
             if (emp == null)
                 return NotFound();
 
@@ -131,15 +132,15 @@ namespace Demo.PL.Controllers
         }
         [HttpPost]
         [ActionName("Delete")]
-        public IActionResult ConfirmDelete(int? id)
+        public async Task<IActionResult> ConfirmDelete(int? id)
         {
             if (!id.HasValue)
                 return BadRequest();
-            var employee = employeeServices.GetById(id.Value);
+            var employee =await employeeServices.GetByIdAsync(id.Value);
             try
             {
 
-                var deleted = employeeServices.Delete(id.Value);
+                var deleted =await employeeServices.DeleteAsync(id.Value);
                 if (deleted)
                     return RedirectToAction(nameof(Index));
                 ModelState.AddModelError(string.Empty, "cam,t");

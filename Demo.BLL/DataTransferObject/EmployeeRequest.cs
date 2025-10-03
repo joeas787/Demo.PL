@@ -1,4 +1,5 @@
 ﻿using Demo.DAL.Enums;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -43,5 +44,6 @@ public class EmployeeRequest
 
     [Display(Name = "Department")]
     public int? DepartmentId { get; set; }
+    public IFormFile Image { get; set; }
 
 }

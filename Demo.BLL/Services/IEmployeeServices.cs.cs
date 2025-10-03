@@ -7,11 +7,11 @@ namespace Demo.BLL.Services;
 public interface IEmployeeServices
 {
 
-    EmployeeDetailsResponse? GetById(int id);
-    IEnumerable<EmployeeResponse> GetAll();
-    IEnumerable<EmployeeResponse> GetAll(string? Value);
+    Task <EmployeeDetailsResponse?> GetByIdAsync(int id);
+   Task< IEnumerable<EmployeeResponse>> GetAllAsync();
+   Task<IEnumerable<EmployeeResponse>> GetAllAsync(string? Value);
 
-    int Update(EmployeeUpdateRequest request);
-    bool Delete(int id);
-    int Add(EmployeeRequest request);
+   Task< int> UpdateAsync(EmployeeUpdateRequest request);
+    Task<bool> DeleteAsync(int id);
+    Task<int> AddAsync(EmployeeRequest request);
 }

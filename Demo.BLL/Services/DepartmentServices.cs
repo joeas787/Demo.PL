@@ -2,41 +2,42 @@
 using Demo.BLL.DataTransferObject;
 using Demo.DAL.Entities;
 using Demo.DAL.Repositories;
+using System.Threading.Tasks;
 
 namespace Demo.BLL.Services;
 
 public class DepartmentServices(IUnitOfWork unitofwork) : IDepartmentServices
 {
-    public int Add(DepartmentRequest request)
+    public async Task<int> AddAsync(DepartmentRequest request)
     {
         var dep = request.ToEntity();
          unitofwork.Department.Add(dep);
-        return unitofwork.SaveChanges();
+        return await unitofwork.SaveChangesAsync();
     }
 
-    public bool Delete(int id)
+    public async Task<bool> DeleteAsync(int id)
     {
-        var dep = unitofwork.Department.GetById(id);
+        var dep =await unitofwork.Department.GetByIdAsync(id);
         if (dep is null) 
             return false;
         unitofwork.Department.Delete(dep);
-        return unitofwork.SaveChanges() > 0;
+        return await unitofwork.SaveChangesAsync() > 0;
     }
 
-    public IEnumerable<DepartmentResponse> GetAll()
+    public async Task<IEnumerable<DepartmentResponse>> GetAllAsync()
     {
-        return unitofwork.Department.GetAll().Select(x=>x.ToResponse());
+        return (await unitofwork.Department.GetAllAsync()).Select(x=>x.ToResponse());
     }
 
 
-    public DepartmentDetailsResponse? GetById(int id)
+    public async Task<DepartmentDetailsResponse?> GetByIdAsync(int id)
     {
-       return unitofwork.Department.GetById(id).ToDetails();
+       return (await unitofwork.Department.GetByIdAsync(id)).ToDetails();
     }
 
-    public int Update(DepartmentUpdateRequest request)
+    public async Task<int> UpdateAsync(DepartmentUpdateRequest request)
     {
          unitofwork.Department.Update(request.ToEntity());
-        return unitofwork.SaveChanges();
+        return  await unitofwork.SaveChangesAsync();
     }
 }

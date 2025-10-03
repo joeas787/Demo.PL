@@ -20,6 +20,7 @@ namespace Demo.PL
             builder.Services.AddScoped<IDepartmentRepositories,DepartmentRepositories>();
             builder.Services.AddScoped<IEmployeeRepositories,EmployeeRepositories>();
             builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
+            builder.Services.AddScoped<IDocument, Document>();
             builder.Services.AddAutoMapper(typeof(BLL.Assembly).Assembly);
             builder.Services.AddDbContext<CompanyDbContext>(options =>
             {

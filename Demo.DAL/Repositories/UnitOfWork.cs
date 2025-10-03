@@ -13,9 +13,9 @@ namespace Demo.DAL.Repositories
 
         public IEmployeeRepositories Employee => employee;
 
-        public int SaveChanges()
+        public async Task<int> SaveChangesAsync()
         {
-         return  dbContext.SaveChanges();
+         return await dbContext.SaveChangesAsync();
         }
     }
 }
