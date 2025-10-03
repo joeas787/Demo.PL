@@ -4,30 +4,51 @@ global using AutoMapper;
 using Demo.BLL.DataTransferObject;
 using Demo.DAL.Entities;
 using Demo.DAL.Repositories;
+using System.Threading.Tasks;
 
 namespace Demo.BLL.Services
 {
-    public class EmployeeServices(IUnitOfWork employee,IMapper mapper) : IEmployeeServices
+    public class EmployeeServices(IUnitOfWork employee,IMapper mapper,IDocument document) : IEmployeeServices
     {
-        public int Add(EmployeeRequest request)
+        public async Task<int> AddAsync(EmployeeRequest request)
         {
             var emp = mapper.Map<EmployeeRequest, Employee>(request);
+            if (request.Image != null && request.Image.Length > 0) {
+
+
+                var image =await document.UploadAsync(request.Image, "Images");
+
+                emp.Image = image;
+
+
+            
+            }
              employee.Employee.Add(emp);
-            return employee.SaveChanges();
+            return await employee.SaveChangesAsync();
         }
 
-        public bool Delete(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
-            var emp = employee.Employee.GetById(id);
+            var emp = await employee.Employee.GetByIdAsync(id);
             if (emp is null)
                 return false;
              employee.Employee.Delete(emp);
-            return employee.SaveChanges() > 0;
+            var r=await employee.SaveChangesAsync();
+            if (r > 0&& emp.Image!=null)
+            {
+
+                document.Delete(emp.Image, "Images");
+                return true;
+
+            }
+
+            return false;
+
         }
 
-        public IEnumerable<EmployeeResponse> GetAll()
+        public async Task<IEnumerable<EmployeeResponse>> GetAllAsync()
         {
-            var emp= employee.Employee.GetAll(e=> new EmployeeResponse
+            var emp= employee.Employee.GetAllAsync(e=> new EmployeeResponse
             {
                 Name = e.Name,
                 Age =(int)e.Age,
@@ -44,14 +65,14 @@ namespace Demo.BLL.Services
 
 
             });
-           return emp;
+           return await emp;
             
 
         }
 
-        public IEnumerable<EmployeeResponse> GetAll(string? Value)
+        public async Task<IEnumerable<EmployeeResponse>> GetAllAsync(string? Value)
         {
-            var emp = employee.Employee.GetAll(e => new EmployeeResponse
+            var emp  =  employee.Employee.GetAllAsync(e => new EmployeeResponse
             {
                 Name = e.Name,
                 Age = (int)e.Age,
@@ -67,20 +88,20 @@ namespace Demo.BLL.Services
 
 
 
-            }).Where(e=>e.Name.Contains(Value));
-            return emp;
+            }).Result.Where(e=>e.Name.Contains(Value));
+            return  emp;
         }
 
-        public EmployeeDetailsResponse? GetById(int id)
+        public async Task<EmployeeDetailsResponse?> GetByIdAsync(int id)
         {
-            var emp= employee.Employee.GetById(id);
+            var emp=await employee.Employee.GetByIdAsync(id);
          return  mapper.Map<EmployeeDetailsResponse>(emp);
         }
 
-        public int Update(EmployeeUpdateRequest request)
+        public async Task<int> UpdateAsync(EmployeeUpdateRequest request)
         {
              employee.Employee.Update(mapper.Map<Employee>(request));
-            return employee.SaveChanges();
+            return await employee.SaveChangesAsync();
         }
 
     }

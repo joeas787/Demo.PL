@@ -9,12 +9,12 @@ namespace Demo.BLL.Services
 {
     public interface IDepartmentServices
     {
-        DepartmentDetailsResponse? GetById(int id);
-        IEnumerable<DepartmentResponse> GetAll(); 
+       Task< DepartmentDetailsResponse?> GetByIdAsync(int id);
+        Task< IEnumerable<DepartmentResponse>> GetAllAsync(); 
         
-        int Update(DepartmentUpdateRequest request);
-        bool Delete(int id);
-        int Add(DepartmentRequest request);
+        Task<int> UpdateAsync(DepartmentUpdateRequest request);
+        Task<bool> DeleteAsync(int id);
+        Task<int> AddAsync(DepartmentRequest request);
 
         
     }

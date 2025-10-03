@@ -2,6 +2,7 @@
 
 using Demo.DAL.Context;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace Demo.DAL.Repositories;
 
@@ -23,14 +24,14 @@ public class BaseRepositories<T>(CompanyDbContext dbContext):IRepositories<T> wh
        
     }
 
-    public virtual IEnumerable<T> GetAll(bool track)
+    public virtual async Task<IEnumerable<T>> GetAllAsync(bool track)
     {
-        return track ? _T.ToList() : _T.AsNoTracking().ToList();
+        return  track ? await _T.ToListAsync() :await _T.AsNoTracking().ToListAsync();
     }
 
-    public virtual T? GetById(int id)
+    public virtual async Task<T?> GetByIdAsync(int id)
     {
-        return _T.Find(id);
+        return await _T.FindAsync(id);
     }
 
     public void Update(T T)

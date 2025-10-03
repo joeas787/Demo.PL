@@ -2,6 +2,7 @@
 
 using Demo.DAL.Context;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace Demo.DAL.Repositories;
 
@@ -12,15 +13,15 @@ public class EmployeeRepositories(CompanyDbContext dbContext) : BaseRepositories
        return _T.Where(x => x.Name == name).ToList();
     }
 
-    public IEnumerable<TResult> GetAll<TResult>(Expression<Func<Employee, TResult>> Result,Expression<Func<Employee,bool>>? expression=null)
+    public async Task<IEnumerable<TResult>> GetAllAsync<TResult>(Expression<Func<Employee, TResult>> Result,Expression<Func<Employee,bool>>? expression=null)
     {
         if(expression == null)
-        return  _T.Select(Result).ToList();
+        return await _T.Select(Result).ToListAsync();
 
-        return _T.Where(expression).Select(Result).ToList();
+        return await _T.Where(expression).Select(Result).ToListAsync();
     }
-    public override Employee? GetById(int id)
+    public override async Task<Employee?> GetByIdAsync(int id)
     {
-        return _T.Include(x => x.Department).FirstOrDefault(e => e.Id == id);
+        return await _T.Include(x => x.Department).FirstOrDefaultAsync(e => e.Id == id);
     }
 }

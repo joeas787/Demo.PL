@@ -6,5 +6,5 @@ namespace Demo.DAL.Repositories;
 public interface IEmployeeRepositories : IRepositories<Employee>
 {
     IEnumerable<Employee> GetAll(string name);
-    IEnumerable<TResult> GetAll<TResult>(Expression<Func<Employee, TResult>> Result, Expression<Func<Employee, bool>>? expression = null);
+   Task< IEnumerable<TResult>> GetAllAsync<TResult>(Expression<Func<Employee, TResult>> Result, Expression<Func<Employee, bool>>? expression = null);
 }
